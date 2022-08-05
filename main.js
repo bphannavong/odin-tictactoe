@@ -8,16 +8,11 @@ const gameBoard = (() => {
         display.innerHTML = ''; //clear board
     }
 
-    function reset() { //reset array and render
-        tiles = new Array(9).fill(' ');
-        _render();
-    }
-
     function _render() { //_render tttboard
         let counter = 0;
         _clear();
 
-        for (let tile of tiles) {
+        for (let tile of tiles) { //create a text node for each array item for display
             const newDiv = document.createElement('div');
             const newContent = document.createTextNode(tile);
 
@@ -29,6 +24,12 @@ const gameBoard = (() => {
         }        
     }
     
+    function reset() { //reset array and render
+        tiles = new Array(9).fill(' ');
+        game.counter = 0;
+        _render();
+    }
+
     function addTile(e) {
         const index = e.target.getAttribute('data-index');
         if (tiles[index] === ' ') { // if tile not marked already
@@ -40,6 +41,8 @@ const gameBoard = (() => {
             game.counter++;
             _render();
         }
+        console.log(game.counter);
+        checkWin(); //check for win every time row is added
     }
 
     function checkWin() {
@@ -48,11 +51,37 @@ const gameBoard = (() => {
         checkDiagonal();
     }
 
-    function checkColumns() {
-        
+    function checkRows() {
+        for (let i = 0; i < tiles.length; i += 3) {
+            if (isEquals(i, i+2, i+3)) { //check if row is same and not empty
+                return i;
+            }
+        }
     }
 
-    return {reset, addTile};
+    function checkColumns() {
+        for (let i = 0; i < 3; i++) {
+            if (isEquals(i, i+3, i+6)) { //check if row is same and not empty
+                return i;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    function checkDiagonal() {
+        if (isEquals(0, 4, 8) || isEquals(2, 4, 6)) {
+            return tiles[4];
+        } else {
+            return null;
+        }
+    }
+
+    function isEquals(a, b, c) {
+        return (tiles[a] === tiles[b] && tiles[a] === tiles[c] && tiles[a] !== ' ');
+    }
+
+    return {reset, addTile, checkRows};
 })();
 
 
@@ -71,20 +100,17 @@ const game = (() => {
     let player2;
 
     function newGame() {
-        counter = 0;
         gameBoard.reset(); //start turn counter; p1/X on even, p2/O on odd
-
         // player1 = Player(prompt('name?',''), 'x');
         // player2 = Player(prompt('name?',''), 'o');
         // playingGame();
     }
 
-    function playingGame() {
-        while (counter < 9) {
-            
-        }
-    }
-
+    // function playingGame() {
+    //     while (counter < 9) {
+    //         gameBoard.checkRows();
+    //     }
+    // }
     
     const btn = document.querySelector('button');
     // btn.addEventListener('click', displayController._renderBoard(gameBoard.tiles));
