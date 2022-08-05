@@ -8,6 +8,11 @@ const gameBoard = (() => {
         display.innerHTML = ''; //clear board
     }
 
+    function reset() {
+        tiles = new Array(9).fill(' ');
+        clear();
+    }
+
     function renderBoard() {
         let counter = 0;
         clear();
@@ -24,16 +29,16 @@ const gameBoard = (() => {
         }        
     }
     
-    function addTile(e, string) {
+    function addTile(e) {
         const index = e.target.getAttribute('data-index');
-        tiles[index] = string;
-
-        renderBoard();
-        
-
+        if (tiles[index] === ' ') { // if tile not marked already
+            tiles[index] = 'x';
+            console.log(tiles);
+            renderBoard();
+        }
     }
 
-    return {renderBoard, clear, addTile};
+    return {renderBoard, reset, clear, addTile};
 })();
 
 
@@ -52,11 +57,12 @@ const game = (() => {
     const tiles = document.querySelectorAll('.tile');
 
     function newGame() {
-        
+        gameBoard.reset(); //start turn counter; p1/X on even, p2/O on odd
+        gameBoard.renderBoard();
     }
     const btn = document.querySelector('button');
     // btn.addEventListener('click', displayController.renderBoard(gameBoard.tiles));
-    btn.addEventListener('click', gameBoard.renderBoard()); 
+    btn.addEventListener('click', newGame); 
     
     // console.log(e.target);
     // if (e.target.classList == 'tile') {
