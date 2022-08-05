@@ -18,41 +18,54 @@ const gameBoard = (() => {
 
             newDiv.classList.add('tile');
             newDiv.setAttribute('data-index', counter++);
+            newDiv.addEventListener('click', addTile);
             newDiv.appendChild(newContent);
             display.appendChild(newDiv);
         }        
     }
     
-    function addTile() {
+    function addTile(e, string) {
+        const index = e.target.getAttribute('data-index');
+        tiles[index] = string;
+
+        renderBoard();
+        
 
     }
 
-
-    return {renderBoard, clear};
+    return {renderBoard, clear, addTile};
 })();
 
+
+// Factory Function for Players
+const Player = (name) => {
+    
+    
+    
+    return {name};
+};
+
 // Module object to control game flow
-const game = ((e) => {
+const game = (() => {
 
     const display = document.querySelector('.display');
     const tiles = document.querySelectorAll('.tile');
 
-    console.log(e.target);
-    // if (e.target.classList == 'tile') {
-    //     e.target.textContent = 'x';
+    function newGame() {
         
+    }
+    const btn = document.querySelector('button');
+    // btn.addEventListener('click', displayController.renderBoard(gameBoard.tiles));
+    btn.addEventListener('click', gameBoard.renderBoard()); 
+    
+    // console.log(e.target);
+    // if (e.target.classList == 'tile') {
+    //     e.target.textContent = 'x'; 
     // }
     
 
 })();
 
-// Factory Function for Players
-const Player = (name) => {
-    return {name};
-};
 
-const btn = document.querySelector('button');
-// btn.addEventListener('click', displayController.renderBoard(gameBoard.tiles));
-btn.addEventListener('click', gameBoard.clear);
-btn.addEventListener('click', game(e)); //left off here
-gameBoard.renderBoard();
+
+// btn.addEventListener('click', game); //left off here
