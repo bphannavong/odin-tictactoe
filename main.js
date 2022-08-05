@@ -49,9 +49,9 @@ const gameBoard = (() => {
     function _checkWin() {
         if (_checkColumns() || _checkRows() || _checkDiagonal()){
             if (game.counter % 2 === 0) {
-                console.log('x wins');
+                console.log(`Player 1 Wins`);
             } else {
-                console.log('o wins');
+                console.log(`Player 2 Wins`);
             }
         }
     }
