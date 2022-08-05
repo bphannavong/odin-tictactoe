@@ -8,16 +8,16 @@ const gameBoard = (() => {
         display.innerHTML = ''; //clear board
     }
 
-    function reset() { //reset array and clear board
+    function reset() { //reset array and render
         tiles = new Array(9).fill(' ');
-        _clear();
+        _render();
     }
 
-    function render() { //render tttboard
+    function _render() { //_render tttboard
         let counter = 0;
         _clear();
 
-        for (tile of tiles) {
+        for (let tile of tiles) {
             const newDiv = document.createElement('div');
             const newContent = document.createTextNode(tile);
 
@@ -38,11 +38,21 @@ const gameBoard = (() => {
                 tiles[index] = 'o';
             }
             game.counter++;
-            render();
+            _render();
         }
     }
 
-    return {render, reset, addTile};
+    function checkWin() {
+        checkColumns();
+        checkRows();
+        checkDiagonal();
+    }
+
+    function checkColumns() {
+        
+    }
+
+    return {reset, addTile};
 })();
 
 
@@ -61,14 +71,11 @@ const game = (() => {
     let player2;
 
     function newGame() {
-        let counter = 0;
+        counter = 0;
         gameBoard.reset(); //start turn counter; p1/X on even, p2/O on odd
-        gameBoard.render();
 
         // player1 = Player(prompt('name?',''), 'x');
         // player2 = Player(prompt('name?',''), 'o');
-        
-        counter = 0;
         // playingGame();
     }
 
@@ -80,17 +87,9 @@ const game = (() => {
 
     
     const btn = document.querySelector('button');
-    // btn.addEventListener('click', displayController.renderBoard(gameBoard.tiles));
+    // btn.addEventListener('click', displayController._renderBoard(gameBoard.tiles));
     btn.addEventListener('click', newGame); 
-    
-    // console.log(e.target);
-    // if (e.target.classList == 'tile') {
-    //     e.target.textContent = 'x'; 
-    // }
     
     return {counter, player1, player2}
 })();
 
-
-
-// btn.addEventListener('click', game); //left off here
