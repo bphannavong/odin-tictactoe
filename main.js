@@ -38,50 +38,51 @@ const gameBoard = (() => {
             } else {
                 tiles[index] = 'o';
             }
-            game.counter++;
             _render();
+            _checkWin();
+            game.counter++;
         }
         console.log(game.counter);
-        checkWin(); //check for win every time row is added
+         //check for win every time row is added
     }
 
-    function checkWin() {
-        checkColumns();
-        checkRows();
-        checkDiagonal();
-    }
-
-    function checkRows() {
-        for (let i = 0; i < tiles.length; i += 3) {
-            if (isEquals(i, i+2, i+3)) { //check if row is same and not empty
-                return i;
-            }
-        }
-    }
-
-    function checkColumns() {
-        for (let i = 0; i < 3; i++) {
-            if (isEquals(i, i+3, i+6)) { //check if row is same and not empty
-                return i;
+    function _checkWin() {
+        if (_checkColumns() || _checkRows() || _checkDiagonal()){
+            if (game.counter % 2 === 0) {
+                console.log('x wins');
             } else {
-                return null;
+                console.log('o wins');
             }
         }
     }
 
-    function checkDiagonal() {
-        if (isEquals(0, 4, 8) || isEquals(2, 4, 6)) {
-            return tiles[4];
-        } else {
-            return null;
+    function _checkRows() {
+        for (let i = 0; i < 7; i += 3) {
+            if (_isEquals(i, i+1, i+2)) { //check if row is same and not empty
+                return tiles[i];
+            } 
         }
     }
 
-    function isEquals(a, b, c) {
+    function _checkColumns() {
+        for (let i = 0; i < 3; i++) {
+            if (_isEquals(i, i+3, i+6)) { //check if column is same and not empty
+                return tiles[i];
+            } 
+        }
+    }
+
+    function _checkDiagonal() {
+        if (_isEquals(0, 4, 8) || _isEquals(2, 4, 6)) {
+            return tiles[4];
+        } 
+    }
+
+    function _isEquals(a, b, c) {
         return (tiles[a] === tiles[b] && tiles[a] === tiles[c] && tiles[a] !== ' ');
     }
 
-    return {reset, addTile, checkRows};
+    return {reset, addTile};
 })();
 
 
@@ -108,7 +109,7 @@ const game = (() => {
 
     // function playingGame() {
     //     while (counter < 9) {
-    //         gameBoard.checkRows();
+    //         gameBoard._checkRows();
     //     }
     // }
     
