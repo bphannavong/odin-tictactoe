@@ -23,28 +23,6 @@ const gameBoard = (() => {
             display.appendChild(newDiv);
         }        
     }
-    
-    function reset() { //reset array and render
-        tiles = new Array(9).fill(' ');
-        game.counter = 0;
-        _render();
-    }
-
-    function addTile(e) {
-        const index = e.target.getAttribute('data-index');
-        if (tiles[index] === ' ') { // if tile not marked already
-            if (game.counter % 2 === 0) {
-                tiles[index] = 'x';
-            } else {
-                tiles[index] = 'o';
-            }
-            _render();
-            _checkWin();
-            game.counter++;
-        }
-        console.log(game.counter);
-         //check for win every time row is added
-    }
 
     function _checkWin() {
         if (_checkColumns() || _checkRows() || _checkDiagonal()){
@@ -82,6 +60,30 @@ const gameBoard = (() => {
         return (tiles[a] === tiles[b] && tiles[a] === tiles[c] && tiles[a] !== ' ');
     }
 
+    function reset() { //reset array and render
+        tiles = new Array(9).fill(' ');
+        game.counter = 0;
+        _render();
+    }
+
+    function addTile(e) {
+        const index = e.target.getAttribute('data-index');
+        if (tiles[index] === ' ') { // if tile not marked already
+            if (game.counter % 2 === 0) {
+                tiles[index] = 'x';
+            } else {
+                tiles[index] = 'o';
+            }
+            _render();
+            _checkWin();
+            if (game.counter++ === 9) {
+                console.log('tie!');
+            }
+        }
+        console.log(game.counter);
+         //check for win every time row is added
+    }
+
     return {reset, addTile};
 })();
 
@@ -101,17 +103,12 @@ const game = (() => {
     let player2;
 
     function newGame() {
-        gameBoard.reset(); //start turn counter; p1/X on even, p2/O on odd
+        gameBoard.reset(); 
+        //start turn counter; p1/X on even, p2/O on odd
         // player1 = Player(prompt('name?',''), 'x');
         // player2 = Player(prompt('name?',''), 'o');
         // playingGame();
     }
-
-    // function playingGame() {
-    //     while (counter < 9) {
-    //         gameBoard._checkRows();
-    //     }
-    // }
     
     const btn = document.querySelector('button');
     // btn.addEventListener('click', displayController._renderBoard(gameBoard.tiles));
